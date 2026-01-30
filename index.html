@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dava Berliano - Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 30%;
+            background-color: #333333;
+            color: #ffffff;
+            padding: 60px 40px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .identity { margin-bottom: 60px; }
+
+        .identity h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .identity .title {
+            font-size: 0.95rem;
+            font-weight: 300;
+            color: #b0b0b0;
+            line-height: 1.5;
+        }
+
+        .contact {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .contact-item {
+            font-size: 0.9rem;
+            font-weight: 300;
+            color: #d0d0d0;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .contact-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #808080;
+        }
+
+        .portfolio-link {
+            color: #d0d0d0;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .portfolio-link:hover {
+            color: #ffffff;
+        }
+
+        .main-content {
+            width: 70%;
+            background-color: #FFFFFF;
+            padding: 60px 80px;
+        }
+
+        /* Page System */
+        .page {
+            display: none;
+            opacity: 0;
+        }
+
+        .page.active {
+            display: block;
+            animation: slideInFromRight 0.6s ease forwards;
+        }
+
+        .page.slide-out {
+            animation: slideOutToLeft 0.6s ease forwards;
+        }
+
+        @keyframes slideInFromRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideOutToLeft {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+        }
+
+        .section { margin-bottom: 60px; }
+
+        .section:not(:first-child) {
+            padding-top: 40px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .section-title {
+            font-size: 1.65rem;
+            font-weight: 600;
+            margin-bottom: 24px;
+            letter-spacing: -0.5px;
+        }
+
+        .about-text {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: #555;
+            font-weight: 400;
+        }
+
+        .education-institution {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .education-details {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .education-list {
+            margin-top: 0;
+        }
+
+        .education-list div {
+            font-size: 0.9rem;
+            line-height: 1.7;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .certificate-header {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .certificate-org {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 4px;
+        }
+
+        .certificate-date {
+            font-size: 0.85rem;
+            color: #888;
+            margin-bottom: 12px;
+        }
+
+        .certificate-description {
+            font-size: 0.9rem;
+            color: #555;
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+
+        .certificate-competencies {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+
+        .certificate-list div {
+            font-size: 0.9rem;
+            color: #555;
+            margin-bottom: 6px;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            column-gap: 40px;
+            row-gap: 12px;
+            width: 100%;
+        }
+
+        .skill-item {
+            font-size: 0.95rem;
+            color: #555;
+            display: flex;
+            align-items: center;
+        }
+
+        .technical-item {
+            margin-bottom: 16px;
+        }
+
+        .technical-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 6px;
+        }
+
+        .technical-description {
+            font-size: 0.9rem;
+            color: #555;
+            line-height: 1.7;
+        }
+
+        /* Page 2 Styles */
+        .company-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .role-title {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 16px;
+        }
+
+        .description-text {
+            font-size: 0.9rem;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 12px;
+        }
+
+        /* Navigation */
+        .nav-container {
+            display: flex;
+            align-items: center;
+            margin-top: 60px;
+        }
+
+        .nav-container.right {
+            justify-content: flex-end;
+        }
+
+        .nav-container.left {
+            justify-content: flex-start;
+        }
+
+        .nav-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .nav-wrapper.right {
+            align-items: flex-end;
+        }
+
+        .page-indicator {
+            font-size: 0.75rem;
+            color: #888888;
+            margin-bottom: 12px;
+        }
+
+        .nav-button {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            color: #333333;
+            background: transparent;
+            border: 1px solid #333333;
+            border-radius: 5px;
+            padding: 10px 24px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .nav-button:hover {
+            background: #333333;
+            color: #ffffff;
+        }
+
+        @media (max-width: 968px) {
+            .container { flex-direction: column; }
+            .sidebar, .main-content {
+                width: 100%;
+                padding: 40px 30px;
+            }
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+            .nav-container {
+                flex-direction: column;
+                gap: 30px;
+            }
+            .nav-wrapper, .nav-wrapper.right {
+                width: 100%;
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sidebar, .main-content {
+                padding: 30px 20px;
+            }
+            .identity h1 {
+                font-size: 1.5rem;
+            }
+            .skills-grid {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <aside class="sidebar">
+        <div class="identity">
+            <h1>Dava Berliano</h1>
+            <p class="title">Content Production Support | Digital Workflow Assistant</p>
+        </div>
+        <div class="contact">
+            <div class="contact-item">
+                <span class="contact-label">Email</span>
+                <a href="mailto:meprodin@outlook.com" class="portfolio-link">meprodin@outlook.com</a>
+            </div>
+            <div class="contact-item">
+                <span class="contact-label">Phone</span>
+                <a href="tel:+6285702599180" class="portfolio-link">+6285-702-599-180</a>
+            </div>
+            <div class="contact-item">
+                <span class="contact-label">Location</span>
+                <span>Madiun, East Java, Indonesia</span>
+            </div>
+            <div class="contact-item">
+                <span class="contact-label">Portfolio</span>
+                <a href="https://focationd.github.io/Portofolio/" target="_blank" class="portfolio-link">focationd.github.io/Portofolio/</a>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <!-- PAGE 1 -->
+        <div class="page active" id="page1">
+            <section class="section">
+                <h2 class="section-title">About Me</h2>
+                <p class="about-text">
+                    Content production support with a focus on managing digital workflows, organizing visual assets, and preparing multimedia materials so they are ready to use and easy to develop. Experienced in handling work documentation, spreadsheets, and social media content design with a neat, consistent, and efficient structure.
+                </p>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title">Technical Capabilities</h2>
+                <div class="technical-item">
+                    <div class="technical-title">- Administrative and Data Systems</div>
+                    <div class="technical-description">
+                        Managing structured datasets within spreadsheets to ensure consistent information processing and reporting. Developing systematic documentation and administrative workflows to support organizational evaluation.
+                    </div>
+                </div>
+                <div class="technical-item">
+                    <div class="technical-title">- Creative and Digital Content</div>
+                    <div class="technical-description">
+                        Executing social media visual design with a focus on information hierarchy and brand message clarity. Managing visual composition and spatial balance to ensure professional aesthetic and optimal readability.
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title">Capabilities</h2>
+                <div class="skills-grid">
+                    <div class="skill-item">- Spreadsheet Data Management</div>
+                    <div class="skill-item">- Digital Marketing Support</div>
+                    <div class="skill-item">- Office Productivity and Documentation</div>
+                    <div class="skill-item">- Graphic Design Execution</div>
+                    <div class="skill-item">- Collaborative Spreadsheet Management</div>
+                    <div class="skill-item">- Administrative Operations</div>
+                    <div class="skill-item">- Visual Layout and Composition</div>
+                    <div class="skill-item">- Video Editing and Content Assembly</div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title">Education</h2>
+                <div class="education-institution">Sman 1 Wungu</div>
+                <div class="education-details">Science Education | Jul 2022 - May 2025</div>
+                <div class="education-list">
+                    <div>- Active in creative projects in the field of design and projects within a team.</div>
+                    <div>- Actively participated in events, both organized by internal and external school parties.</div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title">Certificates</h2>
+                <div class="certificate-header">Revou Digital Marketing Workshop</div>
+                <div class="certificate-org">PT Revolusi Cita Edukasi</div>
+                <div class="certificate-date">Mar 2025</div>
+                <div class="certificate-description">
+                    Completed an intensive program focusing on modern digital marketing strategies and business growth. This program provided a deep understanding of the digital ecosystem from audience mapping to marketing channel optimization.
+                </div>
+                <div class="certificate-competencies">Core Competencies</div>
+                <div class="certificate-list">
+                    <div>- Digital Strategy : Understanding growth marketing fundamentals and determining effective KPIs</div>
+                    <div>- Channel Optimization : Introduction to tactics in Social Media Marketing, SEO and Paid Advertising</div>
+                    <div>- Data Analysis : Fundamental ability to evaluate campaign performance to support decision making</div>
+                </div>
+            </section>
+
+            <div class="nav-container right">
+                <div class="nav-wrapper right">
+                    <div class="page-indicator">Page 01 / 02</div>
+                    <button class="nav-button" onclick="showPage('page2')">Next</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE 2 -->
+        <div class="page" id="page2">
+            <section class="section">
+                <h2 class="section-title">Experience</h2>
+                
+                <div class="company-name">Freelance</div>
+                <div class="role-title">Data Entry Clerk | Aug 2025 - Present</div>
+                
+                <p class="description-text">
+                    - Managing data using spreadsheets for recording processing and presenting information in a neat and consistent manner.
+                </p>
+                
+                <p class="description-text">
+                    - Preparing reports and work documentation in a structured and systematic way for administrative needs and evaluation purposes.
+                </p>
+                
+                <p class="description-text">
+                    - Responsible for managing digital workflows and organizing assets to ensure they are ready for use and easy to develop.
+                </p>
+                
+                <p class="description-text">
+                    - Collecting relevant information and documenting workflows as primary references for organizational report preparation.
+                </p>
+                
+                <p class="description-text">
+                    - Handling supporting administrative tasks with a focus on data accuracy time management and final output efficiency.
+                </p>
+            </section>
+
+            <section class="section">
+                <div class="company-name">Freelance</div>
+                <div class="role-title">Graphic and Brand Designer | Aug 2025 - Present</div>
+                
+                <p class="description-text">
+                    - Managing the creation of visual designs for social media needs while maintaining visual consistency information hierarchy and message clarity.
+                </p>
+                
+                <p class="description-text">
+                    - Responsible for organizing visual element composition design balance and typography to ensure optimal readability and a professional appearance.
+                </p>
+                
+                <p class="description-text">
+                    - Handling the editing process using multi layer editing techniques to maintain clean project structure and simplify revision workflows.
+                </p>
+                
+                <p class="description-text">
+                    - Preparing work documentation in a structured and systematic manner for administrative purposes and design result evaluation.
+                </p>
+                
+                <p class="description-text">
+                    - Managing visual assets and multimedia materials to ensure they are efficiently ready for use within content production workflows.
+                </p>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title">Organizational Experience</h2>
+                
+                <div class="company-name">Strategic Information Liaison Core Coordination Group</div>
+                <div class="role-title">School Representative Delegate | Apr 2024 - Mei 2024</div>
+                
+                <p class="description-text">
+                    - Selected as a school delegate in a multimedia and education exhibition organized by an external institution.
+                </p>
+                
+                <p class="description-text">
+                    - Contributed to the collection of relevant information as a primary reference for the preparation of organizational strategic reports.
+                </p>
+                
+                <p class="description-text">
+                    - Conducted documentation of exhibition workflows to support data accuracy and internal evaluation.
+                </p>
+            </section>
+
+            <div class="nav-container left">
+                <div class="nav-wrapper">
+                    <div class="page-indicator">Page 02 / 02</div>
+                    <button class="nav-button" onclick="showPage('page1')">Back</button>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    function showPage(pageId) {
+        const pages = document.querySelectorAll('.page');
+        const currentPage = document.querySelector('.page.active');
+        
+        // Add slide-out animation to current page
+        if (currentPage) {
+            currentPage.classList.add('slide-out');
+            
+            // Wait for slide-out animation to complete
+            setTimeout(() => {
+                currentPage.classList.remove('active', 'slide-out');
+                
+                // Show target page with slide-in animation
+                const targetPage = document.getElementById(pageId);
+                if (targetPage) {
+                    targetPage.classList.add('active');
